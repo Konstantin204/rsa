@@ -11,7 +11,6 @@ public class Main {
     public static boolean isPrime(int n){
         boolean flag = false;
         for (int i = 2; i <= n / 2; ++i) {
-            // condition for nonprime number
             if (n % i == 0) {
                 flag = true;
                 break;
@@ -56,22 +55,23 @@ public class Main {
         Scanner scannerMsg = new Scanner(System.in);
         System.out.println("Enter message to be encrypted: ");
         String cipher = scannerMsg.nextLine();
-        int[] cipherAscii = new int[cipher.length()];
+        BigInteger[] cipherAscii = new BigInteger[cipher.length()];
         for(int i = 0; i < cipher.length(); i++){
-            cipherAscii[i] = cipher.charAt(i);
+            cipherAscii[i] = BigInteger.valueOf(cipher.charAt(i));
         }
-        double[] c = new double[cipherAscii.length];
+        BigDecimal[] c = new BigDecimal[cipherAscii.length];
+        BigInteger N = BigInteger.valueOf(n);
         for(int i = 0; i < cipherAscii.length; i++){
-            c[i] = Math.pow(cipherAscii[i], e) % n;
+            c[i] = new BigDecimal(cipherAscii[i].pow(e).mod(N), 0);
             System.out.println(c[i]);
         }
-        double[] decryptedAscii = new double[c.length];
+        BigInteger[] decryptedAscii = new BigInteger[c.length];
         for(int i = 0; i < c.length; i++){
-            decryptedAscii[i] = Math.pow(c[i], d) % n;
+            decryptedAscii[i] = c[i].toBigInteger().pow(d).mod(N);
         }
         char[] decrypted = new char[decryptedAscii.length];
         for(int i = 0; i < decryptedAscii.length; i++){
-            decrypted[i] = (char)(decryptedAscii[i]);
+            decrypted[i] = (char)(decryptedAscii[i]).intValueExact();
         }
         for(int i = 0; i < decrypted.length; i++){
             System.out.println(decrypted[i]);
